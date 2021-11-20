@@ -30,6 +30,10 @@ public class Util {
         return strings.get(0);
     }
 
+    public static int readInt() {
+        return Integer.parseInt(readString());
+    }
+
     public static List<String> readStrings() {
         return readFile(Function.identity());
     }
@@ -40,6 +44,18 @@ public class Util {
 
     public static List<Long> readLongs() {
         return readFile(Long::parseLong);
+    }
+
+    public static <T> List<T> read(Function<String, T> parser) {
+        return readFile(parser);
+    }
+
+    public static List<List<Integer>> readIntLists() {
+        return readIntLists(" ");
+    }
+
+    public static List<List<Integer>> readIntLists(String separator) {
+        return readFile(str -> Arrays.stream(str.split(separator)).map(Integer::parseInt).collect(Collectors.toList()));
     }
 
     public static char[][] readBoard() {
@@ -132,6 +148,21 @@ public class Util {
                 }
                 if (print) {
                     System.out.println(line);
+                    if (line.contains("You gave an answer too")) {
+                        var p = line.indexOf("s left to wait");
+                        if (p != -1) {
+                            var p2 = line.indexOf(' ', p-5);
+                            int s = Integer.parseInt(line.substring(p2+1, p));
+                            System.out.printf("Submitting again in %ds\n", s);
+                            try {
+                                Thread.sleep(s*1000L);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            submit(part, answer);
+                            return;
+                        }
+                    }
                 }
                 if (line.equals("<main>")) {
                     print = true;
