@@ -75,7 +75,7 @@ public class Util {
             for (int j = 0; j < content.get(i).length; ++j) {
                 char c = content.get(i)[j];
                 if (c != trueChar && c != falseChar) {
-                    throw new RuntimeException(String.format("Char %c is neight true nor false", c));
+                    throw new RuntimeException(String.format("Char %c is neither true nor false", c));
                 }
                 board[i][j] = c == trueChar;
             }
