@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 public class Day3 {
 
     public static void main(String[] args) {
-        Util.verifySubmission();
         var inputs = Util.readStrings();
         Util.submitPart1(part1(inputs));
         Util.submitPart2(part2(inputs));
@@ -21,17 +20,17 @@ public class Day3 {
 
     private static int calc(List<String> inputs, boolean most) {
         for (int i = 0; inputs.size() > 1; ++i) {
-            int z = 0;
-            int o = 0;
+            int zero = 0;
+            int one = 0;
             for (String input : inputs) {
                 if (input.charAt(i) == '1') {
-                    ++o;
+                    ++one;
                 } else {
-                    ++z;
+                    ++zero;
                 }
             }
             final var index = i;
-            var target = most ? (z > o ? '0' : '1') : (o < z ? '1' : '0');
+            var target = most ? (zero > one ? '0' : '1') : (one < zero ? '1' : '0');
             inputs = inputs.stream().filter(in -> in.charAt(index) == target).collect(Collectors.toList());
         }
         return Integer.parseInt(inputs.get(0), 2);
@@ -41,16 +40,16 @@ public class Day3 {
         var g = new StringBuilder();
         var e = new StringBuilder();
         for (int i = 0; i < inputs.get(0).length(); ++i) {
-            int z = 0;
-            int o = 0;
+            int zero = 0;
+            int one = 0;
             for (String input : inputs) {
                 if (input.charAt(i) == '1') {
-                    ++o;
+                    ++one;
                 } else {
-                    ++z;
+                    ++zero;
                 }
             }
-            if (z > o) {
+            if (zero > one) {
                 g.append("0");
                 e.append("1");
             } else {
