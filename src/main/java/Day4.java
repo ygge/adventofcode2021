@@ -104,30 +104,6 @@ public class Day4 {
                 return score(num, board);
             }
         }
-        for (int i = 0; i < board.length; ++i) {
-            boolean solved = true;
-            for (int y = 0; y < board.length; ++y) {
-                if (board[y][y] != -1) {
-                    solved = false;
-                    break;
-                }
-            }
-            if (solved) {
-                return score(num, board);
-            }
-        }
-        for (int i = 0; i < board.length; ++i) {
-            boolean solved = true;
-            for (int y = 0; y < board.length; ++y) {
-                if (board[y][board[y].length-y-1] != -1) {
-                    solved = false;
-                    break;
-                }
-            }
-            if (solved) {
-                return score(num, board);
-            }
-        }
         return -1;
     }
 
