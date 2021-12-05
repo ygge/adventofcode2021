@@ -1,7 +1,12 @@
 import util.Pos;
 import util.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Day5 {
 
@@ -20,15 +25,11 @@ public class Day5 {
     }
 
     private static int countDuplicates(List<String> inputs, boolean considerDiagonals) {
-        Map<Pos, Integer> seen = new HashMap<>();
-        inputs.stream()
+        var seen = inputs.stream()
                 .map(row -> parse(row, considerDiagonals))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .forEach(pos -> {
-                    var prev = seen.get(pos);
-                    seen.put(pos, prev == null ? 1 : prev + 1);
-                });
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
         return (int)seen.values().stream()
                 .filter(v -> v > 1)
                 .count();
