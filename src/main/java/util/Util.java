@@ -60,6 +60,12 @@ public class Util {
                 .collect(Collectors.toList());
     }
 
+    public static List<List<Pos>> readLines() {
+        return readPosLists().stream()
+                .map(Util::toLine)
+                .collect(Collectors.toList());
+    }
+
     public static char[][] readBoard() {
         var content = readFile(String::toCharArray);
         char[][] board = new char[content.size()][];
@@ -114,6 +120,35 @@ public class Util {
 
     public static List<String> toStringList(String str) {
         return Arrays.asList(str.split("\n"));
+    }
+
+    private static List<Pos> toLine(List<Pos> posList) {
+        if (posList.size() != 2) {
+            throw new IllegalArgumentException(String.format("Got %d positions, need 2 for a line", posList.size()));
+        }
+        int x1 = posList.get(0).x;
+        int y1 = posList.get(0).y;
+        int x2 = posList.get(1).x;
+        int y2 = posList.get(1).y;
+        if (x1 == x2) {
+            List<Pos> pos = new ArrayList<>();
+            for (int i = Math.min(y1, y2); i <= Math.max(y1, y2); ++i) {
+                pos.add(new Pos(x1, i));
+            }
+            return pos;
+        }
+        if (y1 == y2) {
+            List<Pos> pos = new ArrayList<>();
+            for (int i = Math.min(x1, x2); i <= Math.max(x1, x2); ++i) {
+                pos.add(new Pos(i, y1));
+            }
+            return pos;
+        }
+        List<Pos> pos = new ArrayList<>();
+        for (int i = 0; i <= Math.max(x1, x2)-Math.min(x1, x2); ++i) {
+            pos.add(new Pos(x1+(x1 < x2 ? 1 : -1)*i, y1+(y1 < y2 ? 1 : -1)*i));
+        }
+        return pos;
     }
 
     private static List<Pos> posList(List<Integer> intList) {
