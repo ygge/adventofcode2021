@@ -51,11 +51,13 @@ public class Util {
     }
 
     public static List<List<Integer>> readIntLists() {
-        return readIntLists(" ");
+        return readFile(str -> Arrays.stream(str.split("\\D+")).map(Integer::parseInt).collect(Collectors.toList()));
     }
 
-    public static List<List<Integer>> readIntLists(String separator) {
-        return readFile(str -> Arrays.stream(str.split(separator)).map(Integer::parseInt).collect(Collectors.toList()));
+    public static List<List<Pos>> readPosLists() {
+        return readIntLists().stream()
+                .map(Util::posList)
+                .collect(Collectors.toList());
     }
 
     public static char[][] readBoard() {
@@ -112,6 +114,17 @@ public class Util {
 
     public static List<String> toStringList(String str) {
         return Arrays.asList(str.split("\n"));
+    }
+
+    private static List<Pos> posList(List<Integer> intList) {
+        if (intList.size()%2 == 1) {
+            throw new IllegalArgumentException(String.format("Cannot convert odd list of numbers to positions, got %d numbers", intList.size()));
+        }
+        List<Pos> ret = new ArrayList<>();
+        for (int i = 0; i < intList.size(); i += 2) {
+            ret.add(new Pos(intList.get(i), intList.get(i+1)));
+        }
+        return ret;
     }
 
     private static void submit(int part, String answer) {

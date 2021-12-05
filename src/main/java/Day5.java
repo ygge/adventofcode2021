@@ -11,20 +11,20 @@ import java.util.stream.Collectors;
 public class Day5 {
 
     public static void main(String[] args) {
-        var inputs = Util.readStrings();
+        var inputs = Util.readPosLists();
         Util.submitPart1(part1(inputs));
         Util.submitPart2(part2(inputs));
     }
 
-    private static int part2(List<String> inputs) {
+    private static int part2(List<List<Pos>> inputs) {
         return countDuplicates(inputs, true);
     }
 
-    private static int part1(List<String> inputs) {
+    private static int part1(List<List<Pos>> inputs) {
         return countDuplicates(inputs, false);
     }
 
-    private static int countDuplicates(List<String> inputs, boolean considerDiagonals) {
+    private static int countDuplicates(List<List<Pos>> inputs, boolean considerDiagonals) {
         var seen = inputs.stream()
                 .map(row -> parse(row, considerDiagonals))
                 .filter(Objects::nonNull)
@@ -35,14 +35,11 @@ public class Day5 {
                 .count();
     }
 
-    private static List<Pos> parse(String row, boolean considerDiagonals) {
-        var s = row.split(" -> ");
-        var s1 = s[0].split(",");
-        int x1 = Integer.parseInt(s1[0]);
-        int y1 = Integer.parseInt(s1[1]);
-        var s2 = s[1].split(",");
-        int x2 = Integer.parseInt(s2[0]);
-        int y2 = Integer.parseInt(s2[1]);
+    private static List<Pos> parse(List<Pos> row, boolean considerDiagonals) {
+        int x1 = row.get(0).x;
+        int y1 = row.get(0).y;
+        int x2 = row.get(1).x;
+        int y2 = row.get(1).y;
         if (x1 == x2) {
             List<Pos> pos = new ArrayList<>();
             for (int i = Math.min(y1, y2); i <= Math.max(y1, y2); ++i) {
