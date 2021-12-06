@@ -21,11 +21,10 @@ public class Day6 {
         for (int i = 0; i < turns; ++i) {
             fish = calc(fish);
         }
-        long sum = 0;
-        for (Long value : fish.values()) {
-            sum += value;
-        }
-        return sum;
+        return fish.values()
+                .stream()
+                .mapToLong(a -> a)
+                .sum();
     }
 
     private static Map<Integer, Long> calc(Map<Integer, Long> fish) {
