@@ -6,28 +6,8 @@ public class Day8 {
 
     public static void main(String[] args) {
         Util.verifySubmission();
-        //var inputs = Util.readStrings();
-        var inputs = Util.toStringList("be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | " +
-                "fdgacbe cefdb cefbgd gcbe\n" +
-                "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | " +
-                "fcgedb cgb dgebacf gc\n" +
-                "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | " +
-                "cg cg fdcagb cbg\n" +
-                "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | " +
-                "efabcd cedba gadfec cb\n" +
-                "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | " +
-                "gecf egdcabf bgf bfgea\n" +
-                "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | " +
-                "gebdcfa ecba ca fadegcb\n" +
-                "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | " +
-                "cefg dcbef fcge gbcadfe\n" +
-                "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | " +
-                "ed bcgafe cdgba cbgef\n" +
-                "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | " +
-                "gbdfcae bgc cg cgb\n" +
-                "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | " +
-                "fgae cfgab fg bagce");
-        //Util.submitPart1(part1(inputs));
+        var inputs = Util.readStrings();
+        Util.submitPart1(part1(inputs));
         Util.submitPart2(part2(inputs));
     }
 
@@ -64,17 +44,17 @@ public class Day8 {
                             var t = new HashSet<>(set);
                             t.retainAll(map.get(1));
                             if (t.size() == 1) {
-                                map.put(0, set);
-                                solution.put(set(s), 0);
+                                map.put(6, set);
+                                solution.put(set(s), 6);
                                 solved = true;
                             }
                         }
-                        if (map.containsKey(4)) {
+                        if (!solved && map.containsKey(4)) {
                             var t = new HashSet<>(set);
                             t.retainAll(map.get(4));
                             if (t.size() == 3) {
-                                map.put(6, set);
-                                solution.put(set(s), 6);
+                                map.put(0, set);
+                                solution.put(set(s), 0);
                                 solved = true;
                             }
                             if (t.size() == 4) {
@@ -92,17 +72,17 @@ public class Day8 {
                             var t = new HashSet<>(set);
                             t.retainAll(map.get(1));
                             if (t.size() == 2) {
-                                map.put(5, set(s));
-                                solution.put(set(s), 5);
+                                map.put(3, set(s));
+                                solution.put(set(s), 3);
                                 solved = true;
                             }
                         }
-                        if (map.containsKey(4)) {
+                        if (!solved && map.containsKey(4)) {
                             var t = new HashSet<>(set);
                             t.retainAll(map.get(4));
                             if (t.size() == 3) {
-                                map.put(3, set(s));
-                                solution.put(set(s), 3);
+                                map.put(5, set(s));
+                                solution.put(set(s), 5);
                                 solved = true;
                             }
                             if (t.size() == 2) {
@@ -121,7 +101,6 @@ public class Day8 {
             for (String display : output) {
                 s = 10*s + solution.get(set(display));
             }
-            System.out.println(s);
             sum += s;
         }
         return sum;
