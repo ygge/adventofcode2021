@@ -5,7 +5,28 @@ import java.util.*;
 public class Day8 {
 
     public static void main(String[] args) {
-        var inputs = Util.readStrings();
+        Util.verifySubmission();
+        //var inputs = Util.readStrings();
+        var inputs = Util.toStringList("be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | " +
+                "fdgacbe cefdb cefbgd gcbe\n" +
+                "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | " +
+                "fcgedb cgb dgebacf gc\n" +
+                "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | " +
+                "cg cg fdcagb cbg\n" +
+                "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | " +
+                "efabcd cedba gadfec cb\n" +
+                "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | " +
+                "gecf egdcabf bgf bfgea\n" +
+                "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | " +
+                "gebdcfa ecba ca fadegcb\n" +
+                "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | " +
+                "cefg dcbef fcge gbcadfe\n" +
+                "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | " +
+                "ed bcgafe cdgba cbgef\n" +
+                "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | " +
+                "gbdfcae bgc cg cgb\n" +
+                "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | " +
+                "fgae cfgab fg bagce");
         //Util.submitPart1(part1(inputs));
         Util.submitPart2(part2(inputs));
     }
@@ -14,39 +35,94 @@ public class Day8 {
         int sum = 0;
         for (String input : inputs) {
             Map<Integer, Set<Character>> map = new HashMap<>();
-            Map<String, Integer> solution = new HashMap<>();
-            var split = input.split("\\|");
+            Map<Set<Character>, Integer> solution = new HashMap<>();
+            var split = input.split(" \\| ");
             var displays = split[0].split(" ");
             var output = split[1].split(" ");
-            for (String s : output) {
+            for (String s : displays) {
+                var set = set(s);
                 if (s.length() == 2) {
-                    map.put(1, set(s));
-                    solution.put(s, 1);
+                    map.put(1, set);
+                    solution.put(set(s), 1);
                 } else if (s.length() == 4) {
-                    map.put(4, set(s));
-                    solution.put(s, 4);
+                    map.put(4, set);
+                    solution.put(set(s), 4);
                 } else if (s.length() == 3) {
-                    map.put(7, set(s));
-                    solution.put(s, 7);
+                    map.put(7, set);
+                    solution.put(set(s), 7);
                 } else if (s.length() == 7) {
-                    map.put(8, set(s));
-                    solution.put(s, 8);
+                    map.put(8, set);
+                    solution.put(set(s), 8);
                 }
             }
-            for (String s : output) {
-                if (!solution.containsKey(s)) {
+            for (String s : displays) {
+                if (!solution.containsKey(set(s))) {
                     var set = set(s);
                     if (s.length() == 6) {
+                        var solved = false;
                         if (map.containsKey(1)) {
                             var t = new HashSet<>(set);
                             t.retainAll(map.get(1));
-                            if (t.size() == 0)
+                            if (t.size() == 1) {
+                                map.put(0, set);
+                                solution.put(set(s), 0);
+                                solved = true;
+                            }
+                        }
+                        if (map.containsKey(4)) {
+                            var t = new HashSet<>(set);
+                            t.retainAll(map.get(4));
+                            if (t.size() == 3) {
+                                map.put(6, set);
+                                solution.put(set(s), 6);
+                                solved = true;
+                            }
+                            if (t.size() == 4) {
+                                map.put(9, set(s));
+                                solution.put(set(s), 9);
+                                solved = true;
+                            }
+                        }
+                        if (!solved) {
+                            throw new RuntimeException("Not solved: " + input);
                         }
                     } else if (s.length() == 5) {
-
+                        var solved = false;
+                        if (map.containsKey(1)) {
+                            var t = new HashSet<>(set);
+                            t.retainAll(map.get(1));
+                            if (t.size() == 2) {
+                                map.put(5, set(s));
+                                solution.put(set(s), 5);
+                                solved = true;
+                            }
+                        }
+                        if (map.containsKey(4)) {
+                            var t = new HashSet<>(set);
+                            t.retainAll(map.get(4));
+                            if (t.size() == 3) {
+                                map.put(3, set(s));
+                                solution.put(set(s), 3);
+                                solved = true;
+                            }
+                            if (t.size() == 2) {
+                                map.put(2, set(s));
+                                solution.put(set(s), 2);
+                                solved = true;
+                            }
+                        }
+                        if (!solved) {
+                            throw new RuntimeException("Not solved: " + input);
+                        }
                     }
                 }
             }
+            int s = 0;
+            for (String display : output) {
+                s = 10*s + solution.get(set(display));
+            }
+            System.out.println(s);
+            sum += s;
         }
         return sum;
     }
@@ -85,7 +161,7 @@ public class Day8 {
 
  * 3 = 5 (innehåller bägge för 4)
  * 5 = 5 (båda som finns i 4:an men inte 1:an)
- * 2 = 5 (resten
+ * 2 = 5 (resten)
 
  *
  *   0:      1:      2:      3:      4:
