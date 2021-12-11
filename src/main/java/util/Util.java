@@ -75,6 +75,19 @@ public class Util {
         return board;
     }
 
+    public static int[][] readIntBoard() {
+        var content = readFile(String::toCharArray);
+        int[][] board = new int[content.size()][];
+        for (int i = 0; i < content.size(); ++i) {
+            var row = content.get(i);
+            board[i] = new int[row.length];
+            for (int j = 0; j < row.length; ++j) {
+                board[i][j] = row[j]-'0';
+            }
+        }
+        return board;
+    }
+
     public static boolean[][] readBoard(char trueChar, char falseChar) {
         var content = readFile(String::toCharArray);
         boolean[][] board = new boolean[content.size()][];
