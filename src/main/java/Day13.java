@@ -10,10 +10,10 @@ public class Day13 {
     public static void main(String[] args) {
         var inputs = Util.readStrings();
         Util.submitPart1(part1(inputs));
-        Util.submitPart2(part2(inputs));
+        part2(inputs);
     }
 
-    private static String part2(List<String> inputs) {
+    private static void part2(List<String> inputs) {
         Set<Pos> mark = new HashSet<>();
         int r = readInitialMarkings(inputs, mark);
         for (++r; r < inputs.size(); ++r) {
@@ -32,7 +32,6 @@ public class Day13 {
             }
             System.out.println();
         }
-        throw new RuntimeException("See console!");
     }
 
     private static int part1(List<String> inputs) {
