@@ -34,10 +34,10 @@ public class Day15 {
     private static int part1(int[][] inputs) {
         var start = new Pos(0, 0);
         Map<Pos, Integer> seen = new HashMap<>();
-        Deque<Node> queue = new LinkedList<>();
+        var queue = new PriorityQueue<Node>(Comparator.comparingInt(n -> n.score));
         queue.add(new Node(start, 0));
         while (!queue.isEmpty()) {
-            var n = queue.pop();
+            var n = queue.poll();
             var score = seen.get(n.pos);
             if (score != null && score <= n.score) {
                 continue;
@@ -51,7 +51,7 @@ public class Day15 {
         return seen.get(new Pos(inputs.length-1, inputs[0].length-1));
     }
 
-    private static void checkAndAdd(int[][] inputs, Node node, Direction dir, Deque<Node> queue, Map<Pos, Integer> seen) {
+    private static void checkAndAdd(int[][] inputs, Node node, Direction dir, PriorityQueue<Node> queue, Map<Pos, Integer> seen) {
         var pos = node.pos.move(dir);
         if (pos.x < 0 || pos.y < 0 || pos.y >= inputs.length || pos.x >= inputs[0].length) {
             return;
