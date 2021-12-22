@@ -11,12 +11,11 @@ public class Day22 {
     public static void main(String[] args) {
         Util.verifySubmission();
         var inputs = Util.readStrings();
-        //Util.submitPart1(part1(inputs));
+        Util.submitPart1(part1(inputs));
         Util.submitPart2(part2(inputs));
     }
 
     private static long part2(List<String> inputs) {
-        long on = 0;
         List<Cube> cubes = new ArrayList<>();
         for (String input : inputs) {
             var split = input.split(" ");
@@ -37,14 +36,30 @@ public class Day22 {
                     maxZ = Integer.parseInt(sss[1]);
                 }
             }
-            cubes.add(new Cube(
+            var cube = new Cube(
                     Math.min(minX, maxX), Math.max(minX, maxX),
                     Math.min(minY, maxY), Math.max(minY, maxY),
                     Math.min(minZ, maxZ), Math.max(minZ, maxZ),
                     isOn
-            ));
+            );
+            var newCubes = new ArrayList<Cube>();
+            for (Cube c : cubes) {
+                var intersection = new Cube(
+                        Math.max(cube.minX, c.minX), Math.min(cube.maxX, c.maxX),
+                        Math.max(cube.minY, c.minY), Math.min(cube.maxY, c.maxY),
+                        Math.max(cube.minZ, c.minZ), Math.min(cube.maxZ, c.maxZ),
+                        !c.on
+                );
+                if (intersection.exists()) {
+                    newCubes.add(intersection);
+                }
+            }
+            if (isOn) {
+                newCubes.add(cube);
+            }
+            cubes.addAll(newCubes);
         }
-        return on;
+        return cubes.stream().mapToLong(c -> (c.on ? 1 : -1)*c.size()).sum();
     }
 
     private static int part1(List<String> inputs) {
@@ -96,6 +111,26 @@ public class Day22 {
             this.minZ = minZ;
             this.maxZ = maxZ;
             this.on = on;
+        }
+
+        public boolean exists() {
+            return minX <= maxX && minY <= maxY && minZ <= maxZ;
+        }
+
+        public long size() {
+            return (maxX-minX+1L)*(maxY-minY+1)*(maxZ-minZ+1);
+        }
+
+        @Override
+        public String toString() {
+            return "Cube{" +
+                    "minX=" + minX +
+                    ", maxX=" + maxX +
+                    ", minY=" + minY +
+                    ", maxY=" + maxY +
+                    ", minZ=" + minZ +
+                    ", maxZ=" + maxZ +
+                    '}';
         }
     }
 }
