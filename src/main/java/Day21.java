@@ -9,13 +9,15 @@ public class Day21 {
 
     public static void main(String[] args) {
         var inputs = Util.readStrings();
-        Util.submitPart1(part1(inputs));
-        Util.submitPart2(part2(inputs));
+        int p1 = Integer.parseInt(inputs.get(0).split(" ")[4]);
+        int p2 = Integer.parseInt(inputs.get(1).split(" ")[4]);
+        Util.submitPart1(part1(p1, p2));
+        Util.submitPart2(part2(p1, p2));
     }
 
-    private static long part2(List<String> inputs) {
+    private static long part2(int p1, int p2) {
         Map<State, Long> states = new HashMap<>();
-        states.put(new State(8, 6, 0, 0, true), 1L);
+        states.put(new State(p1, p2, 0, 0, true), 1L);
         long p1Won = 0;
         long p2Won = 0;
         while (!states.isEmpty()) {
@@ -65,8 +67,8 @@ public class Day21 {
         return Math.max(p1Won, p2Won);
     }
 
-    private static int part1(List<String> inputs) {
-        int[] pos = new int[]{8, 6};
+    private static int part1(int p1, int p2) {
+        int[] pos = new int[]{p1, p2};
         int[] score = new int[]{0, 0};
         int turns = 0;
         int dice = 0;
