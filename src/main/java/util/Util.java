@@ -203,6 +203,7 @@ public class Util {
             final var in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             String line;
             boolean print = false;
+            boolean success = false;
             while ((line = in.readLine()) != null) {
                 if (line.equals("</main>")) {
                     print = false;
@@ -224,6 +225,9 @@ public class Util {
                             return;
                         }
                     }
+                    if (line.contains("star")) {
+                        success = true;
+                    }
                 }
                 if (line.equals("<main>")) {
                     print = true;
@@ -231,6 +235,9 @@ public class Util {
             }
             out.close();
             in.close();
+            if (!success) {
+                throw new IllegalStateException("No star");
+            }
         }
         catch (IOException e) {
             throw new RuntimeException(e);
